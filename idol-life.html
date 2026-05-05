@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="IDOL LIFE">
+<meta name="theme-color" content="#fff5f9">
+<title>IDOL LIFE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --pink:#e879a0;--pink-l:#fce7f3;--pink-ll:#fff0f9;
+  --purple:#7c3aed;--purple-l:#ede9fe;
+  --green:#16a34a;--green-l:#dcfce7;
+  --bg:linear-gradient(160deg,#fff5f9 0%,#f9f5ff 60%,#f0f9ff 100%);
+  --card:#fff;--border:#fce7f3;
+  --text:#333;--sub:#888;--muted:#ccc;
+  --font:'Zen Maru Gothic','Hiragino Sans',sans-serif;
+}
+html,body{height:100%;background:#fff5f9;font-family:var(--font);}
+body{background:var(--bg);min-height:100vh;max-width:430px;margin:0 auto;padding-bottom:80px;}
+input,button,textarea,select{font-family:var(--font);}
+textarea{resize:none;}
+button{cursor:pointer;}
+::-webkit-scrollbar{display:none;}
+
+/* HEADER */
+#header{
+  background:#fff;border-bottom:1.5px solid var(--border);
+  box-shadow:0 2px 16px #fce7f320;padding:14px 16px 0;
+  position:sticky;top:0;z-index:20;
+}
+.h-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.logo{font-size:20px;font-weight:900;letter-spacing:2px;color:var(--pink);}
+.logo-sub{font-size:10px;color:#f9a8d4;margin-top:2px;}
+.streak-pill{
+  background:linear-gradient(135deg,#fff0f9,#fce7f3);
+  border:1.5px solid #f9a8d4;border-radius:14px;
+  padding:5px 12px;display:flex;align-items:center;gap:6px;
+  font-size:13px;color:#888;
+}
+.streak-pill b{font-size:17px;color:var(--pink);}
+#install-btn{
+  padding:6px 10px;background:linear-gradient(90deg,#f9a8d4,#c084fc);
+  border:none;border-radius:12px;font-size:18px;
+  box-shadow:0 2px 8px #e879a030;
+}
+.aff{
+  font-size:12px;color:#c084fc;line-height:1.5;padding:8px 12px;
+  background:linear-gradient(90deg,#fff0f9,#f9f5ff);
+  border-radius:10px;margin:0 0 10px;border:1px solid #f3e8ff;
+}
+
+/* BOTTOM NAV */
+#nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);
+  border-top:1.5px solid var(--border);display:flex;z-index:50;
+  box-shadow:0 -4px 20px #fce7f330;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.nav-btn{
+  flex:1;padding:8px 4px 10px;border:none;background:transparent;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  color:#ddd;font-family:var(--font);transition:color 0.15s;font-size:9px;font-weight:500;
+}
+.nav-btn .ni{font-size:20px;}
+.nav-btn.on{color:var(--pink);font-weight:800;}
+
+/* PAGES */
+.page{display:none;padding:12px;flex-direction:column;gap:12px;animation:fadein 0.2s ease;}
+.page.active{display:flex;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARD */
+.card{
+  background:var(--card);border-radius:18px;padding:16px;
+  box-shadow:0 2px 14px #fce7f318;border:1px solid var(--border);
+}
+.lbl{
+  font-size:11px;font-weight:800;color:#f472b6;
+  letter-spacing:1.1px;text-transform:uppercase;margin-bottom:12px;
+}
+
+/* PROGRESS BAR */
+.bar-wrap{height:9px;background:#f9f0f6;border-radius:99px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:99px;transition:width 0.5s cubic-bezier(.4,2,.6,1);}
+
+/* BANNER */
+.banner{
+  background:linear-gradient(90deg,#fce7f3,#ede9fe);
+  border:1.5px solid #f9a8d4;border-radius:10px;
+  padding:8px 12px;font-size:12px;font-weight:800;
+  color:#be185d;text-align:center;margin-top:8px;
+}
+
+/* MODE BUTTONS */
+.mode-row{display:flex;gap:6px;margin-bottom:12px;}
+.mode-btn{
+  flex:1;padding:9px 4px;border:2px solid;border-radius:12px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  transition:all 0.15s;font-family:var(--font);
+}
+.mode-btn .me{font-size:18px;}
+.mode-btn .ml{font-size:11px;font-weight:700;}
+
+/* TIME BUTTONS */
+.time-row{display:flex;gap:6px;}
+.time-btn{
+  flex:1;padding:10px 0;border:none;border-radius:10px;
+  font-size:13px;font-weight:800;transition:all 0.15s;font-family:var(--font);
+}
+
+/* TASK CARD */
+.task-card{
+  display:flex;align-items:center;gap:9px;padding:11px 12px;
+  border:1.5px solid #eee;border-radius:13px;
+  transition:all 0.15s;font-family:var(--font);
+  text-align:left;position:relative;width:100%;background:#fff;
+}
+.task-card.done{border-color:var(--pink);}
+.chk{
+  width:24px;height:24px;border-radius:50%;border:2px solid #ddd;
+  background:#f0f0f0;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all 0.2s;font-size:12px;color:#fff;
+}
+.chk.done{background:var(--pink);border-color:var(--pink);}
+.task-name{flex:1;font-size:13px;font-weight:600;color:#333;transition:all 0.2s;}
+.task-name.done{text-decoration:line-through;color:var(--pink);}
+.pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;flex-shrink:0;}
+
+/* QUICK STATS */
+.qstats{display:flex;gap:8px;}
+.qstat{
+  flex:1;background:#fff;border-radius:16px;padding:12px 8px;text-align:center;
+  border:1px solid var(--border);box-shadow:0 2px 10px #fce7f318;
+}
+.qstat-n{font-size:20px;font-weight:900;color:var(--pink);line-height:1.1;}
+.qstat-l{font-size:9px;color:var(--muted);margin-top:3px;font-weight:700;}
+
+/* INPUTS */
+.inp{
+  padding:8px 11px;border:1.5px solid var(--border);border-radius:10px;
+  font-size:13px;font-family:var(--font);outline:none;background:#fff;
+}
+.inp:focus{border-color:var(--pink);}
+.sm-btn{
+  padding:8px 16px;background:var(--pink);color:#fff;border:none;
+  border-radius:10px;font-size:13px;font-weight:700;font-family:var(--font);
+  white-space:nowrap;
+}
+.edit-btn{
+  padding:4px 10px;border:1.5px solid #f9a8d4;border-radius:99px;
+  background:#fff9fc;font-size:11px;font-weight:700;color:var(--pink);
+  font-family:var(--font);
+}
+.save-btn{
+  width:100%;padding:11px;
+  background:linear-gradient(90deg,#f9a8d4,var(--pink));
+  color:#fff;border:none;border-radius:12px;
+  font-size:13px;font-weight:800;font-family:var(--font);
+}
+.quick-btn{
+  width:100%;padding:13px;border:1.5px dashed #f9a8d4;
+  border-radius:13px;background:#fff9fc;font-size:13px;
+  font-weight:700;color:#f472b6;font-family:var(--font);
+}
+textarea.ta{
+  width:100%;padding:11px;border:1.5px solid var(--border);border-radius:12px;
+  font-size:13px;line-height:1.7;font-family:var(--font);outline:none;
+  color:#444;background:#fff9fc;margin-bottom:10px;
+}
+textarea.ta:focus{border-color:var(--pink);}
+
+/* TODO */
+.todo-item{
+  display:flex;align-items:center;gap:10px;padding:12px 14px;
+  border:1.5px solid #eee;border-radius:14px;background:#fff;
+  transition:all 0.15s;
+}
+.todo-item.done{border-color:#f9a8d4;background:#fff0f9;}
+.todo-chk{
+  width:26px;height:26px;border-radius:50%;border:2px solid #ddd;
+  background:#f0f0f0;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all 0.2s;font-size:13px;color:#fff;cursor:pointer;
+}
+.todo-chk.done{background:var(--pink);border-color:var(--pink);}
+
+/* SCHEDULE */
+.sch-line{position:absolute;left:76px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,#fce7f3,#ede9fe);border-radius:2px;}
+.sch-row{display:flex;gap:10px;margin-bottom:12px;position:relative;z-index:1;align-items:flex-start;}
+.sch-time{min-width:76px;text-align:right;padding-top:9px;font-size:12px;font-weight:800;color:#bbb;flex-shrink:0;}
+.sch-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;margin-top:10px;}
+.sch-content{flex:1;border-radius:12px;padding:8px 12px;}
+.sch-label{font-size:13px;font-weight:600;color:#333;line-height:1.4;}
+.sch-tag{font-size:10px;font-weight:700;border-radius:99px;padding:1px 7px;background:rgba(255,255,255,0.6);}
+
+/* VIDEO */
+.vid-thumb{
+  position:relative;border-radius:12px;overflow:hidden;
+  aspect-ratio:16/9;background:#111;margin-bottom:10px;cursor:pointer;
+  display:block;text-decoration:none;
+}
+.vid-thumb img{width:100%;height:100%;object-fit:cover;}
+.vid-play{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,0.12);
+}
+.vid-play-btn{
+  width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,0.92);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(0,0,0,0.2);font-size:20px;padding-left:3px;
+}
+.log-btn{
+  width:100%;padding:14px;border:none;border-radius:14px;
+  font-family:var(--font);font-size:14px;font-weight:900;
+  transition:all 0.2s;
+}
+.log-btn.done{
+  background:linear-gradient(90deg,#f9a8d4,var(--pink));
+  color:#fff;box-shadow:0 4px 16px #e879a044;
+}
+.log-btn.todo-state{background:#f9f0f6;color:#f9a8d4;}
+
+/* SCHED MODE TABS */
+.sched-tabs{display:flex;gap:6px;}
+.sched-tab{
+  flex:1;padding:8px 2px;border:2px solid #eee;border-radius:12px;
+  background:#fafafa;font-size:9px;font-weight:700;color:#bbb;
+  font-family:var(--font);transition:all 0.15s;
+}
+.sched-tab.on{border-color:var(--pink);background:var(--pink-l);color:var(--pink);}
+
+/* PHOTO */
+.photo-up{
+  width:100%;padding:28px 20px;border:2px dashed #f9a8d4;
+  border-radius:14px;background:#fff9fc;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  font-family:var(--font);
+}
+.photo-list-item{
+  display:flex;gap:12px;padding:10px 0;
+  border-bottom:1px solid var(--border);cursor:pointer;
+  align-items:center;
+}
+.photo-list-item img{width:64px;height:64px;object-fit:cover;border-radius:10px;flex-shrink:0;}
+
+/* REWARD */
+.rew-card{
+  border:1.5px solid #eee;border-radius:16px;padding:14px;
+  transition:all 0.2s;
+}
+.rew-card.unlocked{
+  background:linear-gradient(135deg,#fff0f9,#fce7f3);
+  border-color:#f9a8d4;
+}
+.rew-icon{
+  width:40px;height:40px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+
+/* OVERLAY / MODAL */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;
+  display:none;align-items:flex-end;justify-content:center;
+}
+.overlay.open{display:flex;}
+.modal{
+  background:#fff;border-radius:20px 20px 0 0;
+  padding:20px 18px 36px;width:100%;max-width:430px;
+  box-shadow:0 -4px 40px rgba(0,0,0,0.15);
+  max-height:88vh;overflow-y:auto;
+}
+
+/* INSTALL STEP */
+.install-step{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+.install-n{
+  width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;flex-shrink:0;
+}
+.install-text{font-size:13px;line-height:1.5;color:#555;}
+
+/* SPARKLE */
+.sparkle{
+  position:absolute;right:8px;top:4px;font-size:18px;
+  pointer-events:none;animation:sparkleUp 0.9s ease forwards;
+}
+@keyframes sparkleUp{
+  0%{opacity:1;transform:translateY(0) scale(1)}
+  100%{opacity:0;transform:translateY(-32px) scale(1.3)}
+}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 #e879a044}50%{box-shadow:0 0 0 8px #e879a000}}
+
+/* VID CAT BUTTONS */
+.vid-cat-btn{
+  padding:6px 12px;border-radius:99px;font-size:11px;font-weight:700;cursor:pointer;
+  font-family:var(--font);border:1.5px solid #eee;background:#f5f5f5;color:#bbb;
+  transition:all 0.15s;
+}
+.vid-cat-btn.active-cat{border-color:var(--pink);background:#fce7f3;color:var(--pink);}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div id="header">
+  <div class="h-row">
+    <div>
+      <div class="logo">✦ IDOL LIFE</div>
+      <div id="today-date" style="font-size:12px;color:#f9a8d4;margin-top:3px;font-weight:700;"></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <div class="streak-pill">🔥 <b id="streak-num">0</b>日</div>
+      <button id="install-btn" onclick="openInstall()" title="ホーム画面に追加">📲</button>
+    </div>
+  </div>
+  <div class="aff" id="aff-text"></div>
+</div>
+
+<!-- PAGES -->
+<div id="p-home" class="page active">
+  <div class="qstats">
+    <div class="qstat"><div class="qstat-n" id="qs-routine">0%</div><div class="qstat-l">ルーティン</div></div>
+    <div class="qstat"><div class="qstat-n" id="qs-steps">0</div><div class="qstat-l">👟 歩数</div></div>
+    <div class="qstat"><div class="qstat-n" id="qs-todo">0/0</div><div class="qstat-l">✅ ToDo</div></div>
+  </div>
+
+  <!-- mode -->
+  <div class="card">
+    <div class="lbl">今日のモード</div>
+    <div class="mode-row" id="mode-row"></div>
+    <div class="lbl">時間</div>
+    <div class="time-row" id="time-row"></div>
+  </div>
+
+  <!-- routine -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px;">
+      <div class="lbl" style="margin-bottom:0">今日のルーティン</div>
+      <span id="routine-pct" style="font-size:28px;font-weight:900;color:var(--pink);line-height:1;">0%</span>
+    </div>
+    <div class="bar-wrap"><div class="bar-fill" id="routine-bar" style="width:0%;background:linear-gradient(90deg,#fce7f3,var(--pink));"></div></div>
+    <div style="font-size:11px;color:var(--muted);margin-top:5px;margin-bottom:12px;" id="routine-sub">0 / 0 タスク完了</div>
+    <div id="task-list" style="display:flex;flex-direction:column;gap:7px;"></div>
+  </div>
+
+  <!-- steps -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div class="lbl" style="margin-bottom:0">👟 今日の歩数</div>
+      <span style="font-size:11px;color:var(--muted);background:#f9f0f6;padding:3px 8px;border-radius:99px;">目標 8,000歩</span>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:10px;">
+      <span id="steps-num" style="font-size:36px;font-weight:900;color:var(--pink);line-height:1;">0</span>
+      <span style="font-size:14px;color:var(--muted);">歩</span>
+      <span id="steps-pct" style="font-size:13px;color:var(--muted);margin-left:4px;font-weight:700;">0%</span>
+    </div>
+    <div class="bar-wrap" style="margin-bottom:4px;"><div class="bar-fill" id="steps-bar" style="width:0%;background:linear-gradient(90deg,#fbcfe8,var(--pink));"></div></div>
+    <div id="steps-banner" style="display:none;" class="banner">🎉 目標達成！よく歩いた！</div>
+    <!-- 入力エリア：常に表示 -->
+    <div style="margin-top:14px;background:#fff9fc;border:1.5px solid #fce7f3;border-radius:14px;padding:12px;">
+      <div style="font-size:11px;font-weight:700;color:#f472b6;margin-bottom:8px;">📱 歩数を入力する</div>
+      <div style="font-size:10px;color:#ccc;margin-bottom:10px;">iPhoneのヘルスケアアプリ → 「歩数」→ 今日の合計を確認してここに入力</div>
+      <div style="display:flex;gap:8px;">
+        <input class="inp" id="steps-input" type="number" inputmode="numeric" placeholder="例：7,432" style="flex:1;font-size:18px;font-weight:700;padding:12px 14px;">
+        <button class="sm-btn" onclick="saveSteps()" style="padding:12px 20px;font-size:15px;">記録 ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TODO PAGE -->
+<div id="p-todo" class="page">
+  <div style="background:linear-gradient(135deg,#fff0f9,#fce7f3);border:1.5px solid #f9a8d4;border-radius:18px;padding:18px 16px;">
+    <div style="font-size:20px;font-weight:900;color:var(--pink);margin-bottom:4px;">✅ 今日の絶対やるリスト</div>
+    <div style="font-size:12px;color:#f9a8d4;" id="todo-header-sub">0 / 0 完了</div>
+    <div class="bar-wrap" style="margin-top:10px;"><div class="bar-fill" id="todo-bar" style="width:0%;background:linear-gradient(90deg,#f9a8d4,var(--pink));"></div></div>
+  </div>
+  <div class="card">
+    <div class="lbl">＋ 追加</div>
+    <div style="display:flex;gap:8px;">
+      <input class="inp" id="todo-input" style="flex:1;font-size:14px;" placeholder="例：インスタ投稿する、筋トレ動画やる">
+      <button class="sm-btn" onclick="addTodo()" style="font-size:18px;padding:8px 16px;">＋</button>
+    </div>
+  </div>
+  <div class="card" id="todo-list-card">
+    <div id="todo-list"></div>
+  </div>
+</div>
+
+<!-- SCHEDULE PAGE -->
+<div id="p-sched" class="page">
+  <div class="sched-tabs">
+    <button class="sched-tab on" data-smode="remote" onclick="setSchedMode('remote')">🏠 リモート</button>
+    <button class="sched-tab" data-smode="office" onclick="setSchedMode('office')">👔 出勤</button>
+    <button class="sched-tab" data-smode="holiday" onclick="setSchedMode('holiday')">🌸 休日</button>
+    <button class="sched-tab" data-smode="custom" onclick="setSchedMode('custom')">✨ カスタム</button>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <div class="lbl" style="margin-bottom:0;">タイムライン</div>
+      <div style="display:flex;gap:6px;">
+        <button class="edit-btn" id="sched-add-btn" onclick="toggleSchedAdd()" style="display:none;">＋ 追加</button>
+        <button class="edit-btn" id="sched-edit-btn" onclick="toggleSchedEdit()">✎ 編集</button>
+      </div>
+    </div>
+    <div style="position:relative;">
+      <div class="sch-line" id="sch-line"></div>
+      <div id="sched-list"></div>
+    </div>
+    <div id="sched-add-form" style="display:none;margin-top:12px;padding:12px;background:#fff9fc;border-radius:12px;border:1px dashed #fce7f3;">
+      <div class="lbl" style="margin-bottom:8px;">＋ 追加</div>
+      <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+        <input class="inp" id="ns-time" type="time" style="width:88px;">
+        <input class="inp" id="ns-icon" placeholder="絵文字" style="width:42px;text-align:center;">
+        <input class="inp" id="ns-label" placeholder="内容（例：友達とカフェ）" style="flex:1;min-width:120px;">
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px;" id="ns-cats"></div>
+      <button class="sm-btn" onclick="addSchedSlot()" style="width:100%;padding:10px;">追加する</button>
+    </div>
+  </div>
+  <div id="office-note" style="display:none;background:#ede9fe;border-radius:12px;padding:10px 14px;font-size:12px;color:#7c3aed;line-height:1.6;">
+    📱 通勤中：投稿作成 or 資格勉強のスキマ時間も！
+  </div>
+</div>
+
+<!-- BODY PAGE -->
+<div id="p-body" class="page">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+      <div class="lbl" style="margin-bottom:0;">📸 今日のボディチェック</div>
+      <span id="body-date" style="font-size:11px;color:var(--muted);"></span>
+    </div>
+    <div id="photo-area"></div>
+    <input type="file" id="photo-input" accept="image/*" capture="environment" style="display:none;" onchange="handlePhoto(event)">
+  </div>
+  <div class="card">
+    <div class="lbl">変化の記録</div>
+    <div id="photo-list"></div>
+  </div>
+</div>
+
+<!-- VIDEOS PAGE -->
+<div id="p-vids" class="page">
+  <div style="background:linear-gradient(135deg,#fff0f9,#ede9fe);border-radius:18px;padding:16px;">
+    <div style="font-size:18px;font-weight:900;color:var(--pink);margin-bottom:2px;">▶️ トレーニング動画</div>
+    <div style="font-size:12px;color:#c084fc;">やったら「完了」ボタンで記録しよう✨</div>
+  </div>
+
+  <!-- 動画追加フォーム：常に上部に表示 -->
+  <div class="card" id="vid-add-panel">
+    <div class="lbl" style="margin-bottom:10px;">＋ 動画を追加・登録</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div>
+        <div style="font-size:11px;color:#aaa;margin-bottom:4px;">タイトル</div>
+        <input class="inp" id="new-vid-title" placeholder="例：HIIT宅トレ30分" style="width:100%;font-size:14px;">
+      </div>
+      <div>
+        <div style="font-size:11px;color:#aaa;margin-bottom:4px;">YouTubeのURL（なくてもOK）</div>
+        <input class="inp" id="new-vid-url" placeholder="https://youtube.com/watch?v=..." style="width:100%;font-size:13px;">
+      </div>
+      <div>
+        <div style="font-size:11px;color:#aaa;margin-bottom:6px;">カテゴリ</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;" id="new-vid-cats">
+          <button onclick="pickNewVidCat('workout',this)" data-cat="workout" class="vid-cat-btn active-cat">💪 宅トレ</button>
+          <button onclick="pickNewVidCat('yoga',this)" data-cat="yoga" class="vid-cat-btn">🧘‍♀️ ヨガ</button>
+          <button onclick="pickNewVidCat('stretch',this)" data-cat="stretch" class="vid-cat-btn">🏃 有酸素</button>
+          <button onclick="pickNewVidCat('dance',this)" data-cat="dance" class="vid-cat-btn">💃 ダンス</button>
+          <button onclick="pickNewVidCat('other',this)" data-cat="other" class="vid-cat-btn">✦ その他</button>
+        </div>
+      </div>
+      <button class="sm-btn" onclick="addNewVid()" style="width:100%;padding:12px;font-size:14px;">追加する ＋</button>
+    </div>
+  </div>
+
+  <div id="vid-list"></div>
+  <div id="vid-add-form" style="display:none;"></div>
+</div>
+
+<!-- MORE PAGE -->
+<div id="p-more" class="page">
+  <!-- Diary -->
+  <div class="card">
+    <div class="lbl">✏️ 今日のひとこと</div>
+    <div id="diary-date" style="font-size:11px;color:var(--muted);margin-bottom:12px;"></div>
+    <textarea class="ta" id="diary-input" rows="4" placeholder="今日どうだった？なんでも。"></textarea>
+    <button class="save-btn" onclick="saveDiary()">保存 ✓</button>
+    <div id="diary-history" style="margin-top:4px;"></div>
+  </div>
+
+  <!-- Rewards -->
+  <div style="background:linear-gradient(135deg,#fff0f9,#fce7f3);border:1.5px solid #f9a8d4;border-radius:18px;padding:16px;text-align:center;">
+    <div style="font-size:28px;margin-bottom:4px;">🏆</div>
+    <div style="font-size:15px;font-weight:900;color:var(--pink);">続けたらご褒美！</div>
+    <div style="font-size:22px;font-weight:900;color:var(--pink);margin-top:6px;">🔥 <span id="rew-streak">0</span>日達成中</div>
+  </div>
+  <div id="reward-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+
+  <!-- Stats -->
+  <div class="card">
+    <div class="lbl">📊 週間グラフ</div>
+    <div style="display:flex;gap:5px;height:100px;align-items:flex-end;" id="weekly-chart"></div>
+  </div>
+  <div class="card">
+    <div class="lbl" style="margin-bottom:6px;">🎯 90日チャレンジ</div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="bar-wrap" style="flex:1;height:10px;">
+        <div class="bar-fill" id="goal-bar" style="background:linear-gradient(90deg,#f9a8d4,var(--pink));"></div>
+      </div>
+      <span id="goal-text" style="font-size:14px;font-weight:900;color:var(--pink);white-space:nowrap;">0/90日</span>
+    </div>
+  </div>
+</div>
+
+<!-- INSTALL MODAL -->
+<div class="overlay" id="install-modal">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div style="font-size:17px;font-weight:900;color:var(--pink);">📲 ホーム画面に追加</div>
+      <button onclick="closeInstall()" style="border:none;background:none;font-size:22px;color:var(--muted);">×</button>
+    </div>
+    <!-- iOS -->
+    <div style="background:#fff9fc;border:1.5px solid #fce7f3;border-radius:14px;padding:14px;margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:800;color:var(--pink);margin-bottom:10px;">🍎 iPhone / Safari の場合</div>
+      <div class="install-step">
+        <div class="install-n" style="background:#fce7f3;color:var(--pink);">1</div>
+        <div class="install-text">まずこのファイルを<b>Safariで開く</b>（Chromeでは追加できないよ）</div>
+      </div>
+      <div class="install-step">
+        <div class="install-n" style="background:#fce7f3;color:var(--pink);">2</div>
+        <div class="install-text">画面下の真ん中にある<b>「共有」ボタン ⬆️</b> をタップ</div>
+      </div>
+      <div class="install-step">
+        <div class="install-n" style="background:#fce7f3;color:var(--pink);">3</div>
+        <div class="install-text">メニューをスクロールして<b>「ホーム画面に追加」</b> をタップ</div>
+      </div>
+      <div class="install-step" style="margin-bottom:0;">
+        <div class="install-n" style="background:#fce7f3;color:var(--pink);">4</div>
+        <div class="install-text">右上の<b>「追加」</b>を押したら完了！アイコンが出現✨</div>
+      </div>
+      <div style="margin-top:12px;padding:10px;background:#fce7f3;border-radius:10px;font-size:12px;color:#be185d;font-weight:700;text-align:center;">
+        ⬆️ 共有ボタンは画面の一番下のバーにあるよ
+      </div>
+    </div>
+    <!-- Android -->
+    <div style="background:#f9f5ff;border:1.5px solid #f3e8ff;border-radius:14px;padding:14px;">
+      <div style="font-size:13px;font-weight:800;color:var(--purple);margin-bottom:10px;">🤖 Android / Chrome の場合</div>
+      <div class="install-step">
+        <div class="install-n" style="background:#ede9fe;color:var(--purple);">1</div>
+        <div class="install-text">右上の<b>「︙（メニュー）」</b>をタップ</div>
+      </div>
+      <div class="install-step">
+        <div class="install-n" style="background:#ede9fe;color:var(--purple);">2</div>
+        <div class="install-text"><b>「ホーム画面に追加」</b>または<b>「アプリをインストール」</b>をタップ</div>
+      </div>
+      <div class="install-step" style="margin-bottom:0;">
+        <div class="install-n" style="background:#ede9fe;color:var(--purple);">3</div>
+        <div class="install-text"><b>「インストール」</b>ボタンで完了！</div>
+      </div>
+      <button id="android-install-btn" onclick="androidInstall()" style="display:none;width:100%;margin-top:12px;padding:11px;background:linear-gradient(90deg,#c084fc,var(--purple));color:#fff;border:none;border-radius:12px;font-size:13px;font-weight:800;font-family:var(--font);">
+        ✦ ここからインストールする
+      </button>
+    </div>
+    <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:14px;line-height:1.6;">
+      追加するとアプリのようにすぐ開けるよ！<br>データはこの端末に保存されます📱
+    </div>
+  </div>
+</div>
+
+<!-- PHOTO MODAL -->
+<div class="overlay" id="photo-modal">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+      <span id="photo-modal-date" style="font-size:13px;font-weight:700;color:var(--pink);"></span>
+      <button onclick="closePhotoModal()" style="border:none;background:none;font-size:22px;color:var(--muted);">×</button>
+    </div>
+    <img id="photo-modal-img" src="" alt="" style="width:100%;border-radius:14px;object-fit:contain;max-height:65vh;">
+    <div id="photo-modal-diary" style="margin-top:10px;font-size:13px;color:#888;font-style:italic;"></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="nav">
+  <button class="nav-btn on" data-page="home" onclick="goPage('home')"><span class="ni">🏠</span>ホーム</button>
+  <button class="nav-btn" data-page="todo" onclick="goPage('todo')"><span class="ni">✅</span>ToDo</button>
+  <button class="nav-btn" data-page="sched" onclick="goPage('sched')"><span class="ni">📅</span>予定</button>
+  <button class="nav-btn" data-page="body" onclick="goPage('body')"><span class="ni">📸</span>ボディ</button>
+  <button class="nav-btn" data-page="vids" onclick="goPage('vids')"><span class="ni">▶️</span>動画</button>
+  <button class="nav-btn" data-page="more" onclick="goPage('more')"><span class="ni">✦</span>もっと</button>
+</div>
+
+<script>
+// ─── STORAGE ─────────────────────────────────────────────────────────────────
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||'null')??d;}catch{return d;}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}};
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const AFFIRMATIONS=[
+  "会社員もミニチュア作家も爆美女も、全部あなたにしかできない。",
+  "今日のスキンケアが、3ヶ月後の肌になる。",
+  "韓国アイドルの習慣は、毎日の積み重ねでできてる。",
+  "仕事も制作も美容も。欲張っていい。",
+  "続けることが、いちばん強いセルフケア。",
+  "小さな習慣が、理想の自分を作ってる。",
+  "今日できたことを数えて。できなかったことは明日へ。",
+];
+const WD=["日","月","火","水","木","金","土"];
+const STEP_GOAL=8000;
+const MODES={
+  remote:{id:"remote",label:"リモート",emoji:"🏠",color:"#fce7f3",accent:"#e879a0"},
+  office:{id:"office",label:"出勤",emoji:"👔",color:"#ede9fe",accent:"#7c3aed"},
+  holiday:{id:"holiday",label:"休日",emoji:"🌸",color:"#dcfce7",accent:"#16a34a"},
+};
+const ROUTINES={
+  remote:{
+    60:[{id:"r60_1",name:"ランニング 2km",duration:15,icon:"🏃‍♀️",cat:"cardio"},{id:"r60_2",name:"筋トレ",duration:15,icon:"💪",cat:"strength"},{id:"r60_3",name:"シャワー/入浴",duration:10,icon:"🚿",cat:"care"},{id:"r60_4",name:"スキンケア",duration:10,icon:"✨",cat:"skin"},{id:"r60_5",name:"ストレッチ/ヨガ",duration:10,icon:"🧘‍♀️",cat:"stretch"}],
+    30:[{id:"r30_1",name:"筋トレ",duration:10,icon:"💪",cat:"strength"},{id:"r30_2",name:"軽い有酸素",duration:5,icon:"🏃‍♀️",cat:"cardio"},{id:"r30_3",name:"スキンケア",duration:10,icon:"✨",cat:"skin"},{id:"r30_4",name:"ストレッチ",duration:5,icon:"🧘‍♀️",cat:"stretch"}],
+    15:[{id:"r15_1",name:"筋トレ",duration:5,icon:"💪",cat:"strength"},{id:"r15_2",name:"スキンケア",duration:10,icon:"✨",cat:"skin"}],
+  },
+  office:{
+    60:[{id:"o60_1",name:"筋トレ",duration:15,icon:"💪",cat:"strength"},{id:"o60_2",name:"有酸素",duration:10,icon:"🏃‍♀️",cat:"cardio"},{id:"o60_3",name:"入浴",duration:15,icon:"🛁",cat:"care"},{id:"o60_4",name:"スキンケア",duration:10,icon:"✨",cat:"skin"},{id:"o60_5",name:"ストレッチ",duration:10,icon:"🧘‍♀️",cat:"stretch"}],
+    30:[{id:"o30_1",name:"筋トレ",duration:10,icon:"💪",cat:"strength"},{id:"o30_2",name:"入浴",duration:10,icon:"🛁",cat:"care"},{id:"o30_3",name:"スキンケア",duration:10,icon:"✨",cat:"skin"}],
+    15:[{id:"o15_1",name:"スキンケア",duration:10,icon:"✨",cat:"skin"},{id:"o15_2",name:"軽いストレッチ",duration:5,icon:"🧘‍♀️",cat:"stretch"}],
+  },
+  holiday:{
+    60:[{id:"h60_1",name:"筋トレ",duration:20,icon:"💪",cat:"strength"},{id:"h60_2",name:"有酸素/ランニング",duration:15,icon:"🏃‍♀️",cat:"cardio"},{id:"h60_3",name:"入浴",duration:10,icon:"🛁",cat:"care"},{id:"h60_4",name:"スキンケア",duration:10,icon:"✨",cat:"skin"},{id:"h60_5",name:"マッサージ",duration:5,icon:"💆‍♀️",cat:"care"}],
+    30:[{id:"h30_1",name:"筋トレ",duration:15,icon:"💪",cat:"strength"},{id:"h30_2",name:"スキンケア",duration:10,icon:"✨",cat:"skin"},{id:"h30_3",name:"ストレッチ",duration:5,icon:"🧘‍♀️",cat:"stretch"}],
+    15:[{id:"h15_1",name:"スキンケア",duration:10,icon:"✨",cat:"skin"},{id:"h15_2",name:"ストレッチ",duration:5,icon:"🧘‍♀️",cat:"stretch"}],
+  },
+};
+const CAT_C={cardio:"#fce7f3",strength:"#ede9fe",care:"#e0f2fe",skin:"#fef9c3",stretch:"#dcfce7"};
+const CAT_T={cardio:"#be185d",strength:"#6d28d9",care:"#0369a1",skin:"#a16207",stretch:"#15803d"};
+const SCH_META={
+  morning:{color:"#fef9c3",text:"#a16207",label:"朝"},
+  fitness:{color:"#fce7f3",text:"#e879a0",label:"運動"},
+  work:{color:"#ede9fe",text:"#7c3aed",label:"仕事"},
+  meal:{color:"#dcfce7",text:"#16a34a",label:"食事"},
+  beauty:{color:"#fce7f3",text:"#db2777",label:"美容"},
+  art:{color:"#fff7ed",text:"#c2410c",label:"制作"},
+  commute:{color:"#e0f2fe",text:"#0369a1",label:"移動"},
+  sleep:{color:"#f1f5f9",text:"#64748b",label:"睡眠"},
+  free:{color:"#f9f5ff",text:"#7c3aed",label:"フリー"},
+  friend:{color:"#fdf4ff",text:"#a855f7",label:"友達"},
+};
+const PRESET_REMOTE=[
+  {id:"rm1",time:"07:00",label:"起床・スキンケア・朝食",icon:"☀️",cat:"morning"},
+  {id:"rm2",time:"08:00",label:"宅トレ",icon:"💪",cat:"fitness"},
+  {id:"rm3",time:"09:30",label:"仕事開始",icon:"💼",cat:"work"},
+  {id:"rm4",time:"12:00",label:"ランチ＋ストレッチ",icon:"🍱",cat:"meal"},
+  {id:"rm5",time:"18:00",label:"退勤",icon:"🎉",cat:"work"},
+  {id:"rm6",time:"19:00",label:"ランニング",icon:"🏃‍♀️",cat:"fitness"},
+  {id:"rm7",time:"20:00",label:"ご飯",icon:"🍽️",cat:"meal"},
+  {id:"rm8",time:"21:00",label:"風呂・スキンケア",icon:"🛁",cat:"beauty"},
+  {id:"rm9",time:"22:00",label:"インスタ投稿 or 新作作成 or 資格勉強",icon:"✨",cat:"art"},
+  {id:"rm10",time:"24:00",label:"就寝",icon:"💤",cat:"sleep"},
+];
+const PRESET_OFFICE=[
+  {id:"of1",time:"07:00",label:"起床・スキンケア・朝食",icon:"☀️",cat:"morning"},
+  {id:"of2",time:"07:50",label:"出発",icon:"🚃",cat:"commute"},
+  {id:"of3",time:"09:30",label:"仕事開始",icon:"💼",cat:"work"},
+  {id:"of4",time:"12:00",label:"ランチ",icon:"🍱",cat:"meal"},
+  {id:"of5",time:"18:00",label:"退勤",icon:"🎉",cat:"work"},
+  {id:"of6",time:"20:00",label:"夕食",icon:"🍽️",cat:"meal"},
+  {id:"of7",time:"21:00",label:"宅トレ",icon:"💪",cat:"fitness"},
+  {id:"of8",time:"22:00",label:"風呂・スキンケア",icon:"🛁",cat:"beauty"},
+  {id:"of9",time:"24:00",label:"就寝",icon:"💤",cat:"sleep"},
+];
+const PRESET_HOLIDAY=[
+  {id:"hd1",time:"08:00",label:"起床",icon:"🌸",cat:"morning"},
+  {id:"hd2",time:"09:00",label:"自由にカスタム",icon:"🗓️",cat:"free"},
+];
+const REWARDS=[
+  {days:7,icon:"🎀",label:"7日達成",def:"好きなコスメを1つ買う"},
+  {days:14,icon:"💄",label:"14日達成",def:"スキンケアアイテムを新調"},
+  {days:30,icon:"👗",label:"30日達成",def:"ほしい服を買っていい日"},
+  {days:60,icon:"💎",label:"60日達成",def:"アクセサリーか推しグッズ"},
+  {days:90,icon:"👑",label:"90日達成",def:"自分への最高のご褒美！"},
+];
+
+// App state (loaded from localStorage)
+let state={
+  rMode: ld("il_rmode","remote"),
+  tMode: ld("il_tmode",60),
+  data:  ld("il_data",{}),       // {dateKey: {checked,mode,timeMode,completed,diary,vidDone}}
+  steps: ld("il_steps",{}),
+  todos: ld("il_todos",{}),      // {dateKey: {items:[{id,text}], checked:{id:bool}}}
+  photos:ld("il_photos",{}),
+  schedules: ld("il_schedules",{
+    remote: JSON.parse(JSON.stringify(PRESET_REMOTE)),
+    office: JSON.parse(JSON.stringify(PRESET_OFFICE)),
+    holiday:JSON.parse(JSON.stringify(PRESET_HOLIDAY)),
+    custom: [],
+  }),
+  schedMode: "remote",
+  schedEditing: false,
+  videos: ld("il_videos",[
+    {id:"v1",title:"お気に入り宅トレ",url:"",cat:"workout",logs:[]},
+    {id:"v2",title:"お気に入りヨガ",url:"",cat:"yoga",logs:[]},
+  ]),
+  rewWish: ld("il_rewwish",{}),
+  newSchedCat:"free",
+};
+function save(){
+  sv("il_rmode",state.rMode);
+  sv("il_tmode",state.tMode);
+  sv("il_data",state.data);
+  sv("il_steps",state.steps);
+  sv("il_todos",state.todos);
+  sv("il_photos",state.photos);
+  sv("il_schedules",state.schedules);
+  sv("il_videos",state.videos);
+  sv("il_rewwish",state.rewWish);
+}
+
+// ─── DATE HELPERS ─────────────────────────────────────────────────────────────
+const tk=()=>new Date().toISOString().slice(0,10);
+function getLast7(){return Array.from({length:7},(_,i)=>{const d=new Date();d.setDate(d.getDate()-(6-i));return d.toISOString().slice(0,10);});}
+function getStreak(){
+  let n=0,d=new Date();
+  for(let i=0;i<365;i++){
+    const k=d.toISOString().slice(0,10);
+    if(state.data[k]?.completed){n++;d.setDate(d.getDate()-1);}else break;
+  }
+  return n;
+}
+function getDayPct(dd){
+  if(!dd?.mode||!dd?.timeMode)return 0;
+  const t=ROUTINES[dd.mode]?.[dd.timeMode]||[];
+  return t.length?Math.round(t.filter(x=>dd.checked?.[x.id]).length/t.length*100):0;
+}
+function fmtDate(dk){const d=new Date(dk+"T00:00:00");return`${d.getMonth()+1}/${d.getDate()}（${WD[d.getDay()]}）`;}
+
+// ─── NAV ─────────────────────────────────────────────────────────────────────
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('p-'+id).classList.add('active');
+  document.querySelector(`[data-page="${id}"]`).classList.add('on');
+  renderPage(id);
+}
+function renderPage(id){
+  if(id==="home")renderHome();
+  else if(id==="todo")renderTodo();
+  else if(id==="sched")renderSched();
+  else if(id==="body")renderBody();
+  else if(id==="vids")renderVids();
+  else if(id==="more")renderMore();
+}
+
+// ─── RENDER HOME ─────────────────────────────────────────────────────────────
+function renderHome(){
+  const today=tk();
+  const td=state.data[today]||{};
+  const cm=MODES[state.rMode];
+  const tasks=ROUTINES[state.rMode]?.[state.tMode]||[];
+  const chk=td.checked||{};
+  const done=tasks.filter(t=>chk[t.id]).length;
+  const pct=tasks.length?Math.round(done/tasks.length*100):0;
+  const todaySteps=state.steps[today]||0;
+  const stepPct=Math.min(Math.round(todaySteps/STEP_GOAL*100),100);
+  const streak=getStreak();
+  const todayTodos=state.todos[today]||{items:[],checked:{}};
+  const tdone=todayTodos.items.filter(t=>todayTodos.checked[t.id]).length;
+
+  // Header
+  document.getElementById("streak-num").textContent=streak;
+  document.getElementById("aff-text").textContent="✦ "+AFFIRMATIONS[new Date().getDay()%AFFIRMATIONS.length];
+
+  // Quick stats
+  document.getElementById("qs-routine").textContent=pct+"%";
+  document.getElementById("qs-steps").textContent=todaySteps.toLocaleString();
+  document.getElementById("qs-todo").textContent=tdone+"/"+(todayTodos.items.length||0);
+
+  // Mode buttons
+  const mr=document.getElementById("mode-row");
+  mr.innerHTML="";
+  Object.values(MODES).forEach(m=>{
+    const on=state.rMode===m.id;
+    const btn=document.createElement("button");
+    btn.className="mode-btn";
+    btn.style.cssText=`background:${on?m.color:"#fafafa"};border-color:${on?m.accent:"#eee"};color:${on?m.accent:"#bbb"};`;
+    btn.innerHTML=`<span class="me">${m.emoji}</span><span class="ml">${m.label}</span>`;
+    btn.onclick=()=>{state.rMode=m.id;save();renderHome();};
+    mr.appendChild(btn);
+  });
+
+  // Time buttons
+  const tr=document.getElementById("time-row");
+  tr.innerHTML="";
+  [15,30,60].forEach(t=>{
+    const on=state.tMode===t;
+    const btn=document.createElement("button");
+    btn.className="time-btn";
+    btn.style.cssText=`background:${on?cm.accent:"#f0f0f0"};color:${on?"#fff":"#aaa"};`;
+    btn.textContent=t+"分";
+    btn.onclick=()=>{state.tMode=t;save();renderHome();};
+    tr.appendChild(btn);
+  });
+
+  // Routine
+  document.getElementById("routine-pct").textContent=pct+"%";
+  document.getElementById("routine-pct").style.color=cm.accent;
+  document.getElementById("routine-bar").style.width=pct+"%";
+  document.getElementById("routine-bar").style.background=`linear-gradient(90deg,${cm.color},${cm.accent})`;
+  document.getElementById("routine-sub").textContent=`${done} / ${tasks.length} タスク完了`;
+
+  const tl=document.getElementById("task-list");
+  tl.innerHTML="";
+  if(pct===100){
+    const b=document.createElement("div");b.className="banner";b.textContent="🌟 今日のルーティン完璧！";tl.appendChild(b);
+  }
+  tasks.forEach(task=>{
+    const dn=!!chk[task.id];
+    const btn=document.createElement("button");
+    btn.className="task-card"+(dn?" done":"");
+    if(dn)btn.style.background=cm.color;
+    btn.innerHTML=`
+      <div class="chk${dn?" done":""}">${dn?"✓":""}</div>
+      <span style="font-size:18px;">${task.icon}</span>
+      <span class="task-name${dn?" done":""}"> ${task.name}</span>
+      <span class="pill" style="background:${CAT_C[task.cat]};color:${CAT_T[task.cat]};">${task.duration}分</span>
+    `;
+    btn.onclick=()=>toggleTask(task.id);
+    tl.appendChild(btn);
+  });
+
+  // Steps
+  document.getElementById("steps-num").textContent=todaySteps.toLocaleString();
+  document.getElementById("steps-pct").textContent=stepPct+"%";
+  document.getElementById("steps-bar").style.width=stepPct+"%";
+  document.getElementById("steps-banner").style.display=stepPct>=100?"block":"none";
+}
+
+function toggleTask(id){
+  const today=tk();
+  const td=state.data[today]||{};
+  const chk={...(td.checked||{})};
+  if(chk[id])delete chk[id]; else chk[id]=true;
+  state.data[today]={...td,checked:chk,mode:state.rMode,timeMode:state.tMode};
+  // check completion
+  const tasks=ROUTINES[state.rMode]?.[state.tMode]||[];
+  const done=tasks.filter(t=>chk[t.id]).length;
+  if(done===tasks.length)state.data[today].completed=true;
+  save();renderHome();
+}
+
+function saveSteps(){
+  const v=parseInt(document.getElementById("steps-input").value)||0;
+  state.steps[tk()]=v;
+  document.getElementById("steps-input").value="";
+  save();renderHome();
+}
+document.getElementById("steps-input").addEventListener("keydown",e=>{if(e.key==="Enter")saveSteps();});
+
+// ─── TODO ─────────────────────────────────────────────────────────────────────
+function renderTodo(){
+  const today=tk();
+  const td=state.todos[today]||{items:[],checked:{}};
+  const done=td.items.filter(t=>td.checked[t.id]).length;
+  const total=td.items.length;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById("todo-header-sub").innerHTML=`${done} / ${total} 完了${total>0&&done===total?" 🌟 全完了！":""}`;
+  document.getElementById("todo-bar").style.width=pct+"%";
+  const list=document.getElementById("todo-list");
+  list.innerHTML="";
+  if(total===0){
+    list.innerHTML='<div style="text-align:center;padding:24px 0;color:#ddd;"><div style="font-size:32px;margin-bottom:8px;">📋</div><div style="font-size:13px;">まだ何もないよ<br>上から追加してみよう！</div></div>';
+    return;
+  }
+  td.items.forEach(todo=>{
+    const dn=!!td.checked[todo.id];
+    const div=document.createElement("div");
+    div.className="todo-item"+(dn?" done":"");
+    div.style.marginBottom="8px";
+    div.innerHTML=`
+      <button class="todo-chk${dn?" done":""}" onclick="toggleTodo('${todo.id}')">${dn?"✓":""}</button>
+      <span style="flex:1;font-size:14px;font-weight:600;color:${dn?"var(--pink)":"#333"};text-decoration:${dn?"line-through":"none"};">${todo.text}</span>
+      <button onclick="removeTodo('${todo.id}')" style="border:none;background:none;color:#ddd;font-size:18px;cursor:pointer;padding:4px;">×</button>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function addTodo(){
+  const inp=document.getElementById("todo-input");
+  const text=inp.value.trim();if(!text)return;
+  const today=tk();
+  const td=state.todos[today]||{items:[],checked:{}};
+  td.items=[...td.items,{id:"td_"+Date.now(),text}];
+  state.todos[today]=td;
+  inp.value="";save();renderTodo();
+  // Update qs
+  document.getElementById("qs-todo").textContent=td.items.filter(t=>td.checked[t.id]).length+"/"+td.items.length;
+}
+function toggleTodo(id){
+  const today=tk();
+  const td=state.todos[today]||{items:[],checked:{}};
+  td.checked={...td.checked,[id]:!td.checked[id]};
+  state.todos[today]=td;save();renderTodo();
+}
+function removeTodo(id){
+  const today=tk();
+  const td=state.todos[today]||{items:[],checked:{}};
+  td.items=td.items.filter(t=>t.id!==id);
+  state.todos[today]=td;save();renderTodo();
+}
+document.getElementById("todo-input").addEventListener("keydown",e=>{if(e.key==="Enter")addTodo();});
+
+// ─── SCHEDULE ────────────────────────────────────────────────────────────────
+function setSchedMode(m){
+  state.schedMode=m;
+  state.schedEditing=false;
+  document.querySelectorAll('.sched-tab').forEach(t=>{
+    t.classList.toggle('on',t.dataset.smode===m);
+  });
+  document.getElementById("sched-add-btn").style.display=(m==="holiday"||m==="custom")?"block":"none";
+  document.getElementById("office-note").style.display=m==="office"?"block":"none";
+  document.getElementById("sched-edit-btn").textContent="✎ 編集";
+  document.getElementById("sched-add-form").style.display="none";
+  renderSched();
+}
+
+function toggleSchedEdit(){
+  state.schedEditing=!state.schedEditing;
+  document.getElementById("sched-edit-btn").textContent=state.schedEditing?"✓ 完了":"✎ 編集";
+  if(!state.schedEditing)document.getElementById("sched-add-form").style.display="none";
+  renderSched();
+}
+
+function toggleSchedAdd(){
+  const f=document.getElementById("sched-add-form");
+  f.style.display=f.style.display==="none"?"block":"none";
+  if(f.style.display==="block")buildSchedCats();
+}
+
+function buildSchedCats(){
+  const el=document.getElementById("ns-cats");
+  el.innerHTML="";
+  Object.entries(SCH_META).forEach(([id,m])=>{
+    const btn=document.createElement("button");
+    const on=state.newSchedCat===id;
+    btn.style.cssText=`padding:3px 8px;border-radius:99px;font-size:10px;cursor:pointer;font-family:var(--font);font-weight:700;background:${on?m.color:"#f5f5f5"};color:${on?m.text:"#bbb"};border:1.5px solid ${on?m.text:"transparent"};`;
+    btn.textContent=m.label;
+    btn.onclick=()=>{state.newSchedCat=id;buildSchedCats();};
+    el.appendChild(btn);
+  });
+}
+
+function addSchedSlot(){
+  const time=document.getElementById("ns-time").value;
+  const icon=document.getElementById("ns-icon").value||"⭐";
+  const label=document.getElementById("ns-label").value.trim();
+  if(!label)return;
+  const slot={id:"sl_"+Date.now(),time,icon,label,cat:state.newSchedCat};
+  const sched=state.schedules[state.schedMode]||[];
+  state.schedules[state.schedMode]=[...sched,slot].sort((a,b)=>a.time.localeCompare(b.time));
+  document.getElementById("ns-time").value="";
+  document.getElementById("ns-icon").value="";
+  document.getElementById("ns-label").value="";
+  save();renderSched();
+}
+
+function renderSched(){
+  const sched=state.schedules[state.schedMode]||[];
+  const ed=state.schedEditing;
+  const list=document.getElementById("sched-list");
+  list.innerHTML="";
+  const line=document.getElementById("sch-line");
+  line.style.display=sched.length?"block":"none";
+
+  if(sched.length===0){
+    list.innerHTML='<div style="text-align:center;color:#ddd;padding:20px 0;font-size:13px;">＋ 追加でスケジュールを作ろう</div>';
+    return;
+  }
+
+  sched.forEach(slot=>{
+    const m=SCH_META[slot.cat]||SCH_META.free;
+    const row=document.createElement("div");
+    row.className="sch-row";
+
+    if(ed){
+      row.innerHTML=`
+        <input type="time" value="${slot.time.includes(":")?slot.time:""}" onchange="updateSchedSlot('${slot.id}','time',this.value)"
+          class="inp" style="width:76px;font-size:12px;font-weight:700;padding:4px 6px;flex-shrink:0;">
+        <div class="sch-dot" style="background:${m.text};box-shadow:0 0 0 3px ${m.color};margin-top:10px;"></div>
+        <div style="flex:1;background:${m.color};border-radius:12px;padding:8px 12px;">
+          <div style="display:flex;gap:6px;">
+            <input value="${slot.icon}" onchange="updateSchedSlot('${slot.id}','icon',this.value)"
+              class="inp" style="width:36px;text-align:center;padding:3px 4px;font-size:16px;">
+            <input value="${slot.label}" onchange="updateSchedSlot('${slot.id}','label',this.value)"
+              class="inp" style="flex:1;font-size:12px;">
+          </div>
+          <div style="display:flex;align-items:center;margin-top:6px;">
+            <span class="sch-tag" style="color:${m.text};">${m.label}</span>
+            <button onclick="removeSchedSlot('${slot.id}')" style="margin-left:auto;border:none;background:rgba(255,255,255,0.7);color:var(--pink);border-radius:99px;width:20px;height:20px;font-size:12px;cursor:pointer;">×</button>
+          </div>
+        </div>
+      `;
+    } else {
+      row.innerHTML=`
+        <div class="sch-time">${slot.time}</div>
+        <div class="sch-dot" style="background:${m.text};box-shadow:0 0 0 3px ${m.color};margin-top:10px;"></div>
+        <div class="sch-content" style="background:${m.color};">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:16px;">${slot.icon}</span>
+            <span class="sch-label">${slot.label}</span>
+          </div>
+          <div style="margin-top:4px;"><span class="sch-tag" style="color:${m.text};">${m.label}</span></div>
+        </div>
+      `;
+    }
+    list.appendChild(row);
+  });
+}
+
+function updateSchedSlot(id,key,val){
+  state.schedules[state.schedMode]=state.schedules[state.schedMode]
+    .map(s=>s.id===id?{...s,[key]:val}:s)
+    .sort((a,b)=>a.time.localeCompare(b.time));
+  save();
+}
+function removeSchedSlot(id){
+  state.schedules[state.schedMode]=state.schedules[state.schedMode].filter(s=>s.id!==id);
+  save();renderSched();
+}
+
+// ─── BODY ────────────────────────────────────────────────────────────────────
+function renderBody(){
+  const today=tk();
+  document.getElementById("body-date").textContent=`${new Date().getMonth()+1}/${new Date().getDate()}`;
+  const pa=document.getElementById("photo-area");
+  if(state.photos[today]){
+    pa.innerHTML=`
+      <div style="position:relative;">
+        <img src="${state.photos[today]}" onclick="openPhotoModal('${today}')" style="width:100%;border-radius:14px;object-fit:cover;max-height:300px;cursor:zoom-in;">
+        <button onclick="document.getElementById('photo-input').click()" style="position:absolute;bottom:8px;right:8px;padding:5px 12px;background:rgba(255,255,255,0.92);border:1.5px solid #f9a8d4;border-radius:99px;font-size:11px;font-weight:700;color:var(--pink);font-family:var(--font);">📷 撮り直す</button>
+      </div>`;
+  } else {
+    pa.innerHTML=`
+      <button class="photo-up" onclick="document.getElementById('photo-input').click()">
+        <div style="font-size:38px;margin-bottom:8px;">📷</div>
+        <div style="font-size:14px;font-weight:700;color:var(--pink);">今日の写真を追加</div>
+        <div style="font-size:11px;color:#f9a8d4;margin-top:4px;">毎日撮ると変化がわかるよ✨</div>
+      </button>`;
+  }
+  // List
+  const pl=document.getElementById("photo-list");
+  const entries=Object.entries(state.photos).sort(([a],[b])=>b.localeCompare(a));
+  if(!entries.length){pl.innerHTML='<div style="text-align:center;color:#ddd;padding:16px 0;font-size:13px;">まだ写真がありません🌸</div>';return;}
+  pl.innerHTML="";
+  entries.forEach(([dk,src])=>{
+    const d=new Date(dk+"T00:00:00");
+    const dd=state.data[dk];
+    const p=getDayPct(dd);
+    const item=document.createElement("div");
+    item.className="photo-list-item";
+    item.onclick=()=>openPhotoModal(dk);
+    item.innerHTML=`
+      <img src="${src}" alt="">
+      <div style="flex:1;">
+        <div style="font-weight:700;font-size:12px;color:#555;margin-bottom:4px;">${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}（${WD[d.getDay()]}）</div>
+        ${p>0?`<div style="display:flex;align-items:center;gap:6px;margin-top:4px;"><div style="flex:1;height:4px;background:#f5f5f5;border-radius:99px;overflow:hidden;"><div style="height:100%;width:${p}%;background:linear-gradient(90deg,#f9a8d4,var(--pink));border-radius:99px;"></div></div><span style="font-size:10px;color:var(--pink);font-weight:700;">${p}%</span></div>`:""}
+        ${dd?.diary?`<div style="font-size:11px;color:#bbb;margin-top:3px;font-style:italic;">"${dd.diary.slice(0,26)}…"</div>`:""}
+      </div>
+      <span style="color:#ddd;align-self:center;">›</span>
+    `;
+    pl.appendChild(item);
+  });
+}
+
+function handlePhoto(e){
+  const f=e.target.files?.[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const img=new Image();
+    img.onload=()=>{
+      const c=document.createElement("canvas");
+      const M=600;let w=img.width,h=img.height;
+      if(w>M){h=Math.round(h*M/w);w=M;}
+      c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);
+      const b64=c.toDataURL("image/jpeg",0.72);
+      state.photos[tk()]=b64;
+      save();renderBody();
+    };img.src=ev.target.result;
+  };r.readAsDataURL(f);e.target.value="";
+}
+
+function openPhotoModal(dk){
+  document.getElementById("photo-modal-date").textContent=fmtDate(dk);
+  document.getElementById("photo-modal-img").src=state.photos[dk]||"";
+  const diary=state.data[dk]?.diary;
+  document.getElementById("photo-modal-diary").textContent=diary?`"${diary}"`:"";
+  document.getElementById("photo-modal").classList.add("open");
+}
+function closePhotoModal(){document.getElementById("photo-modal").classList.remove("open");}
+
+// ─── VIDEOS ──────────────────────────────────────────────────────────────────
+function ytId(url){try{const u=new URL(url);return u.searchParams.get("v")||u.pathname.split("/").pop();}catch{return null;}}
+
+// New top-form add
+let newVidCat="workout";
+function pickNewVidCat(cat){
+  newVidCat=cat;
+  document.querySelectorAll('.vid-cat-btn').forEach(b=>{
+    b.classList.toggle('active-cat', b.dataset.cat===cat);
+  });
+}
+function addNewVid(){
+  const title=document.getElementById("new-vid-title").value.trim();
+  if(!title){
+    document.getElementById("new-vid-title").focus();
+    document.getElementById("new-vid-title").style.borderColor="var(--pink)";
+    return;
+  }
+  const url=document.getElementById("new-vid-url").value.trim();
+  state.videos=[...state.videos,{id:"v_"+Date.now(),title,url,cat:newVidCat,logs:[]}];
+  save();
+  // Reset form
+  document.getElementById("new-vid-title").value="";
+  document.getElementById("new-vid-url").value="";
+  document.getElementById("new-vid-title").style.borderColor="";
+  newVidCat="workout";
+  document.querySelectorAll('.vid-cat-btn').forEach(b=>b.classList.toggle('active-cat',b.dataset.cat==="workout"));
+  renderVids();
+  // Scroll to new video
+  setTimeout(()=>document.getElementById("vid-list").lastElementChild?.scrollIntoView({behavior:"smooth"}),100);
+}
+
+function renderVids(){
+  const list=document.getElementById("vid-list");
+  list.innerHTML="";
+  if(!state.videos.length){
+    const empty=document.createElement("div");
+    empty.className="card";
+    empty.style.textAlign="center";
+    empty.style.padding="24px";
+    empty.style.color="#ddd";
+    empty.innerHTML='<div style="font-size:32px;margin-bottom:8px;">▶️</div><div style="font-size:13px;">上のフォームから動画を追加してね！</div>';
+    list.appendChild(empty);
+    return;
+  }
+  state.videos.forEach(v=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.id="vid-card-"+v.id;
+    const vid=ytId(v.url);
+    const thumb=vid?`https://img.youtube.com/vi/${vid}/mqdefault.jpg`:null;
+    const todayDone=(v.logs||[]).includes(tk());
+    const total=(v.logs||[]).length;
+    const catLabels={workout:"💪 宅トレ",yoga:"🧘‍♀️ ヨガ",stretch:"🏃 有酸素",dance:"💃 ダンス",other:"✦ その他"};
+    const catLabel=catLabels[v.cat]||"💪 宅トレ";
+
+    card.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+        <div style="flex:1;margin-right:8px;">
+          <div style="font-size:15px;font-weight:800;color:#333;line-height:1.3;">${v.title}</div>
+          <div style="font-size:10px;color:#ccc;margin-top:3px;">${catLabel} · 通算 ${total} 回実施</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0;">
+          <button class="edit-btn" onclick="openVidEdit('${v.id}')">✎</button>
+          <button class="edit-btn" style="color:#f9a8d4;border-color:#fce7f3;" onclick="removeVid('${v.id}')">×</button>
+        </div>
+      </div>
+      <!-- Edit form (hidden by default) -->
+      <div id="vedit-${v.id}" style="display:none;background:#fff9fc;border:1.5px solid #fce7f3;border-radius:12px;padding:12px;margin-bottom:10px;">
+        <div style="font-size:11px;color:#f472b6;font-weight:800;margin-bottom:8px;">✎ 編集</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <input class="inp" id="ve-title-${v.id}" value="${v.title.replace(/"/g,'&quot;')}" style="width:100%;">
+          <input class="inp" id="ve-url-${v.id}" value="${v.url}" placeholder="YouTubeのURL" style="width:100%;">
+          <div style="display:flex;gap:8px;">
+            <button onclick="saveVidInline('${v.id}')" class="sm-btn" style="flex:1;padding:8px;">保存</button>
+            <button onclick="closeVidEdit('${v.id}')" class="sm-btn" style="flex:1;padding:8px;background:#f0f0f0;color:#aaa;">閉じる</button>
+          </div>
+        </div>
+      </div>
+      ${v.url?`
+        <a href="${v.url}" target="_blank" rel="noopener noreferrer" class="vid-thumb">
+          ${thumb?`<img src="${thumb}" alt="" onerror="this.style.display='none'">`:`<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:40px;color:#fff;">▶️</div>`}
+          <div class="vid-play"><div class="vid-play-btn">▶</div></div>
+        </a>
+      `:`
+        <div style="background:#f9f0f6;border-radius:12px;padding:14px;text-align:center;margin-bottom:10px;cursor:pointer;" onclick="openVidEdit('${v.id}')">
+          <div style="font-size:12px;color:#f9a8d4;font-weight:700;">📎 URLを登録するとサムネが表示されるよ</div>
+          <div style="font-size:10px;color:#ddd;margin-top:3px;">タップして編集</div>
+        </div>
+      `}
+      <button class="log-btn ${todayDone?"done":"todo-state"}" onclick="logVideo('${v.id}')">
+        ${todayDone?"✓ 今日やった！記録済み 🌟":"▶ 今日やった！タップして記録"}
+      </button>
+      ${total>0?`
+        <div style="margin-top:10px;">
+          <button onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'flex':'none';this.textContent=this.textContent.includes('▼')?'📅 履歴 ▲':'📅 履歴 ▼';" style="border:none;background:none;font-size:11px;color:#ccc;cursor:pointer;font-family:var(--font);padding:0;">
+            📅 履歴 ▼
+          </button>
+          <div style="display:none;flex-wrap:wrap;gap:4px;margin-top:6px;">
+            ${[...(v.logs||[])].sort((a,b)=>b.localeCompare(a)).slice(0,14).map(dk=>{
+              const d=new Date(dk+"T00:00:00");
+              return`<span style="font-size:10px;padding:2px 8px;border-radius:99px;background:#fce7f3;color:var(--pink);font-weight:700;">${d.getMonth()+1}/${d.getDate()}</span>`;
+            }).join("")}
+          </div>
+        </div>
+      `:""}
+    `;
+    list.appendChild(card);
+  });
+}
+
+function openVidEdit(id){
+  // Close all others first
+  document.querySelectorAll('[id^="vedit-"]').forEach(el=>el.style.display="none");
+  const el=document.getElementById("vedit-"+id);
+  if(el)el.style.display="block";
+}
+function closeVidEdit(id){
+  const el=document.getElementById("vedit-"+id);
+  if(el)el.style.display="none";
+}
+function saveVidInline(id){
+  const title=document.getElementById("ve-title-"+id)?.value.trim();
+  const url=document.getElementById("ve-url-"+id)?.value.trim();
+  if(!title)return;
+  state.videos=state.videos.map(v=>v.id===id?{...v,title,url}:v);
+  save();closeVidEdit(id);renderVids();
+}
+
+function logVideo(id){
+  const v=state.videos.find(v=>v.id===id);if(!v)return;
+  const logs=v.logs||[];
+  const today=tk();
+  const already=logs.includes(today);
+  const newLogs=already?logs.filter(d=>d!==today):[...logs,today];
+  state.videos=state.videos.map(v=>v.id===id?{...v,logs:newLogs}:v);
+  if(!already){
+    const td=state.data[today]||{};
+    state.data[today]={...td,vidDone:{...(td.vidDone||{}),[id]:true}};
+  }
+  save();renderVids();
+}
+
+function toggleVidLog(id,btn){
+  const el=document.getElementById("vidlog-"+id);
+  if(!el)return;
+  const open=el.style.display!=="none"&&el.style.display!=="";
+  el.style.display=open?"none":"flex";
+  btn.textContent=`📅 実施履歴 (${(state.videos.find(v=>v.id===id)?.logs||[]).length}回) ${open?"▼":"▲"}`;
+}
+
+let editingVidId=null;
+function editVid(id){
+  editingVidId=id;
+  const v=state.videos.find(v=>v.id===id);
+  const form=document.getElementById("vid-add-form");
+  form.style.display="block";
+  form.innerHTML=buildVidForm(v.title,v.url,v.cat,true);
+  document.getElementById("vid-list").style.display="none";
+  const panel=document.getElementById("vid-add-panel");
+  if(panel)panel.style.display="none";
+}
+function removeVid(id){
+  if(!confirm("削除する？"))return;
+  state.videos=state.videos.filter(v=>v.id!==id);
+  save();renderVids();
+}
+function startAddVid(){
+  editingVidId=null;
+  const form=document.getElementById("vid-add-form");
+  form.style.display=form.style.display==="block"?"none":"block";
+  if(form.style.display==="block")form.innerHTML=buildVidForm("","","workout",false);
+}
+function buildVidForm(title,url,cat,isEdit){
+  const cats=[{id:"workout",l:"💪 宅トレ"},{id:"yoga",l:"🧘‍♀️ ヨガ"},{id:"stretch",l:"🏃 有酸素"},{id:"dance",l:"💃 ダンス"}];
+  return `
+    <div class="card">
+      <div class="lbl" style="margin-bottom:8px;">${isEdit?"✎ 編集":"＋ 動画を追加"}</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <input class="inp" id="vf-title" value="${title}" placeholder="動画タイトル" style="width:100%;">
+        <input class="inp" id="vf-url" value="${url}" placeholder="YouTubeのURL" style="width:100%;">
+        <div style="display:flex;gap:6px;" id="vf-cats">
+          ${cats.map(c=>`<button onclick="selectVidCat('${c.id}',this)" style="flex:1;padding:6px 2px;border-radius:10px;border:1.5px solid ${cat===c.id?"var(--pink)":"#eee"};background:${cat===c.id?"#fce7f3":"#fafafa"};font-size:9px;font-weight:700;color:${cat===c.id?"var(--pink)":"#bbb"};cursor:pointer;font-family:var(--font);" data-cat="${c.id}">${c.l}</button>`).join("")}
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button onclick="${isEdit?"saveVidEdit()":"saveVidAdd()"}" class="sm-btn" style="flex:1;padding:10px;">${isEdit?"保存":"追加"}</button>
+          <button onclick="cancelVidEdit()" class="sm-btn" style="flex:1;padding:10px;background:#f0f0f0;color:#aaa;">キャンセル</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+let selectedVidCat="workout";
+function selectVidCat(cat,btn){
+  selectedVidCat=cat;
+  document.querySelectorAll('#vf-cats button').forEach(b=>{
+    const on=b.dataset.cat===cat;
+    b.style.borderColor=on?"var(--pink)":"#eee";
+    b.style.background=on?"#fce7f3":"#fafafa";
+    b.style.color=on?"var(--pink)":"#bbb";
+  });
+}
+function saveVidAdd(){
+  const title=document.getElementById("vf-title").value.trim();
+  if(!title)return;
+  state.videos=[...state.videos,{id:"v_"+Date.now(),title,url:document.getElementById("vf-url").value,cat:selectedVidCat,logs:[]}];
+  save();cancelVidEdit();renderVids();
+}
+function saveVidEdit(){
+  const title=document.getElementById("vf-title").value.trim();
+  if(!title)return;
+  state.videos=state.videos.map(v=>v.id===editingVidId?{...v,title,url:document.getElementById("vf-url").value,cat:selectedVidCat}:v);
+  save();cancelVidEdit();renderVids();
+}
+function cancelVidEdit(){
+  editingVidId=null;
+  document.getElementById("vid-add-form").style.display="none";
+  document.getElementById("vid-add-form").innerHTML="";
+  document.getElementById("vid-list").style.display="";
+  const panel=document.getElementById("vid-add-panel");
+  if(panel)panel.style.display="";
+  renderVids();
+}
+
+// ─── MORE ────────────────────────────────────────────────────────────────────
+function renderMore(){
+  const streak=getStreak();
+  const last7=getLast7();
+  document.getElementById("rew-streak").textContent=streak;
+  document.getElementById("streak-num").textContent=streak;
+
+  // Diary
+  const today=tk();
+  const d=new Date();
+  document.getElementById("diary-date").textContent=`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${WD[d.getDay()]}）`;
+  const existing=state.data[today]?.diary||"";
+  document.getElementById("diary-input").value=existing;
+
+  // Diary history
+  const hist=document.getElementById("diary-history");
+  hist.innerHTML="";
+  last7.slice().reverse().filter(k=>state.data[k]?.diary).slice(0,3).forEach(k=>{
+    const dt=new Date(k+"T00:00:00");
+    const div=document.createElement("div");
+    div.style.cssText="padding:8px 0;border-top:1px solid #fce7f3;margin-top:8px;";
+    div.innerHTML=`<div style="font-size:10px;color:#ccc;margin-bottom:3px;">${dt.getMonth()+1}/${dt.getDate()}（${WD[dt.getDay()]}）</div><div style="font-size:12px;color:#888;font-style:italic;">"${state.data[k].diary}"</div>`;
+    hist.appendChild(div);
+  });
+
+  // Rewards
+  const rl=document.getElementById("reward-list");
+  rl.innerHTML="";
+  REWARDS.forEach(r=>{
+    const ul=streak>=r.days;
+    const cu=state.rewWish[r.days];
+    const div=document.createElement("div");
+    div.className="rew-card"+(ul?" unlocked":"");
+    div.style.opacity=ul?"1":"0.75";
+    div.innerHTML=`
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="rew-icon" style="background:${ul?"#fce7f3":"#f0f0f0"};filter:${ul?"none":"grayscale(1)"};">${r.icon}</div>
+        <div style="flex:1;">
+          <div style="font-weight:800;font-size:13px;color:${ul?"var(--pink)":"#ccc"};">${r.label}${ul?" ✓":""}</div>
+          ${!ul?`<div style="font-size:10px;color:#ccc;">あと ${r.days-streak} 日</div>`:""}
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+        <div style="font-size:12px;color:#888;flex:1;">🎁 ${cu||r.def}</div>
+        <button class="edit-btn" onclick="editReward(${r.days},'${cu||r.def}')">${cu?"変更":"設定"}</button>
+      </div>
+      ${!ul?`<div class="bar-wrap" style="margin-top:8px;height:4px;"><div class="bar-fill" style="width:${Math.min(streak/r.days*100,100)}%;background:linear-gradient(90deg,#f9a8d4,var(--pink));"></div></div>`:""}
+    `;
+    rl.appendChild(div);
+  });
+
+  // Weekly chart
+  const chart=document.getElementById("weekly-chart");
+  chart.innerHTML="";
+  last7.forEach(k=>{
+    const dt=new Date(k+"T00:00:00");
+    const p=getDayPct(state.data[k]);
+    const isT=k===today;
+    const col=document.createElement("div");
+    col.style.cssText="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;";
+    col.innerHTML=`
+      <div style="flex:1;width:100%;background:#f5f5f5;border-radius:99px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;">
+        <div style="width:100%;height:${Math.max(p,p>0?5:0)}%;background:${p===100?"linear-gradient(180deg,#f472b6,var(--pink))":p>50?"#fbcfe8":"#f0f0f0"};border-radius:99px;transition:height 0.5s;"></div>
+      </div>
+      <div style="font-size:10px;font-weight:${isT?800:400};color:${isT?"var(--pink)":"#bbb"};">${WD[dt.getDay()]}</div>
+      <div style="font-size:9px;color:${p>0?"var(--pink)":"#ddd"};font-weight:700;">${p>0?p:"-"}</div>
+    `;
+    chart.appendChild(col);
+  });
+
+  // Goal
+  document.getElementById("goal-bar").style.width=Math.min(Math.round(streak/90*100),100)+"%";
+  document.getElementById("goal-text").textContent=streak+"/90日";
+}
+
+function saveDiary(){
+  const today=tk();
+  const v=document.getElementById("diary-input").value;
+  state.data[today]={...(state.data[today]||{}),diary:v};
+  save();renderMore();
+  const btn=document.querySelector('.save-btn');
+  const orig=btn.textContent;
+  btn.textContent="✓ 保存しました！";
+  setTimeout(()=>btn.textContent=orig,1500);
+}
+
+function editReward(days,current){
+  const val=prompt(`${days}日達成のご褒美を入力:`,current);
+  if(val===null)return;
+  state.rewWish[days]=val;
+  save();renderMore();
+}
+
+// ─── INSTALL ─────────────────────────────────────────────────────────────────
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{
+  e.preventDefault();deferredPrompt=e;
+  document.getElementById("android-install-btn").style.display="block";
+});
+function openInstall(){document.getElementById("install-modal").classList.add("open");}
+function closeInstall(){document.getElementById("install-modal").classList.remove("open");}
+async function androidInstall(){
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt();deferredPrompt=null;closeInstall();
+}
+// Close modals on overlay click
+document.getElementById("install-modal").addEventListener("click",function(e){if(e.target===this)closeInstall();});
+document.getElementById("photo-modal").addEventListener("click",function(e){if(e.target===this)closePhotoModal();});
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+// Set today's date in header
+(function(){
+  const d=new Date();
+  const dateStr=`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${WD[d.getDay()]}）`;
+  document.getElementById("today-date").textContent=dateStr;
+})();
+renderHome();
+buildSchedCats();
+// Pre-render sched state
+document.getElementById("sched-add-btn").style.display="none";
+</script>
+</body>
+</html>
